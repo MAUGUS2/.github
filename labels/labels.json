@@ -1,0 +1,35 @@
+[
+  { "name": "type/bug",           "color": "d73a4a", "description": "🐞 A defect that must be fixed" },
+  { "name": "type/feature",       "color": "a2eeef", "description": "✨ New user-visible functionality" },
+  { "name": "type/docs",          "color": "0075ca", "description": "📝 Documentation change" },
+  { "name": "type/test",          "color": "cfd3d7", "description": "🧪 Tests or QA work" },
+  { "name": "type/chore",         "color": "cfd3d7", "description": "🧹 Maintenance / clean-up" },
+  { "name": "type/refactor",      "color": "e6e6e6", "description": "♻️  Code refactoring" },
+  { "name": "type/style",         "color": "fef2c0", "description": "💄 Code style / formatting" },
+  { "name": "type/perf",          "color": "fcae1e", "description": "⚡ Performance improvements" },
+  { "name": "type/ci",            "color": "bfdadc", "description": "🎡 CI/CD changes" },
+
+  { "name": "priority/critical",  "color": "b60205", "description": "🚨 Highest priority (P0)" },
+  { "name": "priority/high",      "color": "d93f0b", "description": "🔥 High priority (P1)" },
+  { "name": "priority/medium",    "color": "fbca04", "description": "⚠️  Medium priority (P2)" },
+  { "name": "priority/low",       "color": "0e8a16", "description": "🟢 Low priority (P3)" },
+
+  { "name": "status/ready",       "color": "7057ff", "description": "🏁 Ready to be picked up" },
+  { "name": "status/in-progress", "color": "006b75", "description": "⏳ Work in progress" },
+  { "name": "status/blocked",     "color": "ffffff", "description": "⛔ Blocked / waiting" },
+  { "name": "status/review",      "color": "d4c5f9", "description": "🔍 In code review" },
+
+  { "name": "scope/backend",      "color": "5319e7", "description": "🖥  Backend / API" },
+  { "name": "scope/frontend",     "color": "1d76db", "description": "🎨 Front-end / UI" },
+  { "name": "scope/infra",        "color": "0e8a16", "description": "⚙️  DevOps / infrastructure" },
+  { "name": "scope/ux",           "color": "c5def5", "description": "🧑‍🎨 UX / design" },
+  { "name": "scope/mobile",       "color": "ff9500", "description": "📱 Mobile app" },
+  { "name": "scope/db",           "color": "336699", "description": "🗄️  Database" },
+
+  { "name": "meta/help-wanted",   "color": "008672", "description": "🙋 We welcome help" },
+  { "name": "meta/good-first-issue","color": "7057ff","description": "🌱 Easy pick for newcomers" },
+  { "name": "meta/wontfix",       "color": "ffffff", "description": "🚫 Will not be addressed" },
+  { "name": "meta/duplicate",     "color": "cfd3d7", "description": "♊ Duplicate issue" },
+  { "name": "meta/breaking-change","color": "ff0000", "description": "💥 Breaking change" },
+  { "name": "meta/security",      "color": "ee0000", "description": "🔐 Security issue" }
+]

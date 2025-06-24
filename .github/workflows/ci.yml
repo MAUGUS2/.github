@@ -1,0 +1,182 @@
+name: 🧪 CI
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      node: ${{ steps.filter.outputs.node }}
+      python: ${{ steps.filter.outputs.python }}
+      go: ${{ steps.filter.outputs.go }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            node:
+              - '**/*.js'
+              - '**/*.ts'
+              - '**/*.jsx'
+              - '**/*.tsx'
+              - '**/package.json'
+              - '**/yarn.lock'
+              - '**/pnpm-lock.yaml'
+            python:
+              - '**/*.py'
+              - '**/requirements.txt'
+              - '**/pyproject.toml'
+              - '**/poetry.lock'
+            go:
+              - '**/*.go'
+              - '**/go.mod'
+              - '**/go.sum'
+
+  node-ci:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.node == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      - name: 🔍 Get pnpm store
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+        
+      - name: 💾 Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+            
+      - name: 📥 Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: 🔍 Lint
+        run: pnpm run lint
+        
+      - name: 🏗️ Type check
+        run: pnpm run typecheck
+        if: hashFiles('tsconfig.json') != ''
+        
+      - name: 🧪 Test
+        run: pnpm run test -- --coverage
+        
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v3
+        if: matrix.node-version == '20.x'
+        
+      - name: 🏗️ Build
+        run: pnpm run build
+
+  python-ci:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.python == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🐍 Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          
+      - name: 📦 Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          
+      - name: 💾 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          
+      - name: 📥 Install dependencies
+        run: poetry install --no-interaction --no-root
+        
+      - name: 🔍 Lint with ruff
+        run: poetry run ruff check .
+        
+      - name: 🎨 Format check with black
+        run: poetry run black --check .
+        
+      - name: 🏷️ Type check with mypy
+        run: poetry run mypy .
+        
+      - name: 🧪 Test with pytest
+        run: poetry run pytest --cov --cov-report=xml
+        
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v3
+        if: matrix.python-version == '3.11'
+
+  go-ci:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.go == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: ['1.20', '1.21']
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        
+      - name: 🔷 Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+          
+      - name: 💾 Cache modules
+        uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          
+      - name: 📥 Download modules
+        run: go mod download
+        
+      - name: 🔍 Lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+          
+      - name: 🧪 Test
+        run: go test -v -race -coverprofile=coverage.out ./...
+        
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v3
+        if: matrix.go-version == '1.21'
+        
+      - name: 🏗️ Build
+        run: go build -v ./...

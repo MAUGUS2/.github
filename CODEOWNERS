@@ -1,0 +1,50 @@
+# CODEOWNERS - Code ownership and automatic review assignment
+# Each line is a file pattern followed by one or more owners
+# Order matters: later rules override earlier ones
+
+# Default owner for everything
+* @MAUGUS2
+
+# Documentation
+/docs/ @MAUGUS2
+*.md @MAUGUS2
+/README.md @MAUGUS2
+
+# Frontend
+/src/components/ @MAUGUS2
+/src/pages/ @MAUGUS2
+/src/styles/ @MAUGUS2
+*.css @MAUGUS2
+*.scss @MAUGUS2
+*.tsx @MAUGUS2
+*.jsx @MAUGUS2
+
+# Backend
+/api/ @MAUGUS2
+/src/services/ @MAUGUS2
+/src/controllers/ @MAUGUS2
+/src/models/ @MAUGUS2
+*.py @MAUGUS2
+*.go @MAUGUS2
+
+# Infrastructure
+/.github/ @MAUGUS2
+/docker/ @MAUGUS2
+/k8s/ @MAUGUS2
+*.yml @MAUGUS2
+*.yaml @MAUGUS2
+Dockerfile* @MAUGUS2
+
+# Config files
+.env* @MAUGUS2
+*config* @MAUGUS2
+
+# Tests
+/tests/ @MAUGUS2
+*.test.* @MAUGUS2
+*.spec.* @MAUGUS2
+
+# Security-sensitive files
+/security/ @MAUGUS2
+*.pem @MAUGUS2
+*.key @MAUGUS2

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 General Q&A
+    url: https://github.com/MAUGUS2/discussions
+    about: Use GitHub Discussions for questions or brainstorming
+  - name: 📚 Documentation
+    url: https://docs.maugus.dev
+    about: Check our documentation for guides and tutorials
+  - name: 🔐 Security Issue
+    url: mailto:security@maugus.dev
+    about: Please report security vulnerabilities privately
