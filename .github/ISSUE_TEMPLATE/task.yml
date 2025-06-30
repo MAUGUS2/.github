@@ -1,62 +1,156 @@
-name: 📋 Task
-description: General task or chore
-title: "[TASK] "
-labels: ["type/chore", "status/ready"]
+name: 📋 MAUGUS Development Task
+description: Professional development task template following industry best practices
+title: "Task: "
+labels: ["type/task", "status/ready"]
+assignees: []
 body:
   - type: markdown
     attributes:
       value: |
-        Use this template for general tasks, maintenance work, or chores.
+        ## 🎯 MAUGUS Development Standards
         
+        This template follows **industry best practices** from leading tech companies:
+        - **Outcome-focused**: Define WHAT to deliver, not HOW to implement
+        - **Concise & actionable**: Clear sections with 3-5 items max per section  
+        - **Measurable success**: Specific, testable acceptance criteria
+        - **Implementation freedom**: Preserve developer creativity and technical choices
+        - **Quality first**: Built-in quality gates ensure high-value issues
+        
+        ---
+
   - type: textarea
-    id: description
+    id: summary
     attributes:
-      label: 📝 Task Description
-      description: What needs to be done?
+      label: 📋 Summary
+      description: What needs to be done and why (2-3 lines focusing on business value)
       placeholder: |
-        Update all dependencies to latest stable versions
+        Implement user authentication system to secure application access.
+        Enables role-based permissions and improves overall security posture.
     validations:
       required: true
-      
+
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: 🎯 Key Outcomes
+      description: Main deliverables (3-5 items max, focus on WHAT user/system gets)
+      placeholder: |
+        - [ ] Working login/logout functionality
+        - [ ] User registration with email verification
+        - [ ] Password reset mechanism
+        - [ ] Role-based access control
+        - [ ] Session management with security headers
+    validations:
+      required: true
+
   - type: textarea
     id: acceptance
     attributes:
       label: ✅ Acceptance Criteria
-      description: How do we know when this is done?
+      description: Measurable conditions for "done" (3-5 criteria max, must be testable)
       placeholder: |
-        - [ ] All dependencies updated
-        - [ ] Tests pass
-        - [ ] No security vulnerabilities
-        - [ ] CHANGELOG updated
+        - [ ] Users can successfully register, login, and logout
+        - [ ] Invalid credentials are properly rejected with clear messages
+        - [ ] Password reset flow works end-to-end via email
+        - [ ] All authentication endpoints return appropriate HTTP status codes
+        - [ ] Security requirements met (encryption, session timeout, etc.)
     validations:
       required: true
-      
-  - type: textarea
-    id: technical
+
+  - type: dropdown
+    id: type
     attributes:
-      label: 🔧 Technical Notes
-      description: Implementation details or considerations
-      placeholder: |
-        - Check breaking changes in React 18
-        - Update webpack config for v5
-        
+      label: 🏷️ Type
+      description: What kind of work is this?
+      options:
+        - feature (new functionality)
+        - enhancement (improve existing feature)
+        - bug (fix defect)
+        - refactor (code improvement)
+        - docs (documentation)
+        - test (testing improvements)
+        - chore (maintenance, dependencies)
+        - infra (deployment, monitoring, tooling)
+    validations:
+      required: true
+
   - type: dropdown
     id: scope
     attributes:
-      label: 🎯 Scope
-      description: Which part of the system does this affect?
+      label: 🎯 Primary Scope
+      description: Main area of codebase affected (select multiple if needed)
       multiple: true
       options:
         - backend
         - frontend
+        - database
+        - api
+        - ui
         - infra
-        - mobile
         - docs
-        - ci/cd
-      
+        - tests
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🚦 Priority
+      description: Business impact and urgency
+      options:
+        - critical (blocks release/users)
+        - high (important feature/fix)
+        - medium (nice to have)
+        - low (future improvement)
+    validations:
+      required: true
+
   - type: input
     id: estimate
     attributes:
-      label: ⏱️ Time Estimate
-      description: How long will this take?
-      placeholder: "2 hours"
+      label: ⏱️ Estimate
+      description: Development time (1-5 days for tasks, use Epics for >1 week)
+      placeholder: "2-3 days"
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: 🔗 Dependencies
+      description: What must be completed first? (keep brief)
+      placeholder: "Depends on #123 (database setup), requires API design approval"
+
+  - type: textarea
+    id: technical_notes
+    attributes:
+      label: 🔧 Technical Notes  
+      description: Key constraints, patterns, or considerations (2-3 lines max, NO code examples)
+      placeholder: |
+        Must integrate with existing OAuth2 flow and follow company security standards.
+        Consider performance impact on high-traffic endpoints.
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: 📚 Resources & References
+      description: Links to relevant docs, designs, or examples (NO embedded code - keep issues concise)
+      placeholder: |
+        - Design: [Figma link]
+        - API Spec: [OpenAPI doc]
+        - Security Requirements: [Security guide]
+
+  - type: checkboxes
+    id: quality_gates
+    attributes:
+      label: 🛡️ Quality Gates
+      description: Verify before creating task (ensures high-quality issues)
+      options:
+        - label: Task is completable in one sprint (≤2 weeks)
+          required: true
+        - label: Acceptance criteria are specific and testable
+          required: true
+        - label: Implementation approach gives developer creative freedom
+          required: true
+        - label: Checked for duplicates in existing issues
+          required: true
+        - label: Business value and user impact are clear
+          required: true
