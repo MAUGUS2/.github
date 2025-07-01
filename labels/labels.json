@@ -8,6 +8,7 @@
   { "name": "type/style",         "color": "fef2c0", "description": "💄 Code style / formatting" },
   { "name": "type/perf",          "color": "fcae1e", "description": "⚡ Performance improvements" },
   { "name": "type/ci",            "color": "bfdadc", "description": "🎡 CI/CD changes" },
+  { "name": "type/debt",          "color": "ffcc00", "description": "🏗️ Technical debt to be resolved" },
 
   { "name": "priority/critical",  "color": "b60205", "description": "🚨 Highest priority (P0)" },
   { "name": "priority/high",      "color": "d93f0b", "description": "🔥 High priority (P1)" },
@@ -26,10 +27,18 @@
   { "name": "scope/mobile",       "color": "ff9500", "description": "📱 Mobile app" },
   { "name": "scope/db",           "color": "336699", "description": "🗄️  Database" },
 
+  { "name": "debt/performance",   "color": "ff8c00", "description": "⚡ Performance-related debt" },
+  { "name": "debt/maintainability", "color": "ff6b6b", "description": "🔧 Code maintainability debt" },
+  { "name": "debt/security",      "color": "ff4757", "description": "🔐 Security-related debt" },
+  { "name": "debt/scalability",   "color": "ffa726", "description": "📈 Scalability debt" },
+  { "name": "debt/documentation", "color": "74b9ff", "description": "📚 Documentation debt" },
+  { "name": "debt/architecture",  "color": "a29bfe", "description": "🏗️ Architecture debt" },
+
   { "name": "meta/help-wanted",   "color": "008672", "description": "🙋 We welcome help" },
   { "name": "meta/good-first-issue","color": "7057ff","description": "🌱 Easy pick for newcomers" },
   { "name": "meta/wontfix",       "color": "ffffff", "description": "🚫 Will not be addressed" },
   { "name": "meta/duplicate",     "color": "cfd3d7", "description": "♊ Duplicate issue" },
   { "name": "meta/breaking-change","color": "ff0000", "description": "💥 Breaking change" },
-  { "name": "meta/security",      "color": "ee0000", "description": "🔐 Security issue" }
+  { "name": "meta/security",      "color": "ee0000", "description": "🔐 Security issue" },
+  { "name": "meta/temporary",     "color": "f39c12", "description": "⏱️ Temporary solution with planned resolution" }
 ]
