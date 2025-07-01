@@ -52,7 +52,7 @@ git config --local branch.autosetuprebase always
 ### Why These Settings Work
 
 | Configuration | Purpose | Prevents | Example |
-|---------------|---------|----------|---------|
+|---------------|---------|----------|----------|
 | `merge.ff = false` | Forces merge commits for features | Linear history hiding feature boundaries | Always creates visible merge nodes |
 | `pull.ff = only` | Clean synchronization | Unnecessary merge commits when pulling | Fast-forward or error (safe) |
 | Auto-setup branches | Consistent tracking | Manual branch configuration errors | Automatic remote tracking |
@@ -508,7 +508,7 @@ git log --pretty=format:"%h %s %cr" --grep="merge.*:" -10
 ## 🔄 Version History
 
 | Version | Date | Changes |
-|---------|------|---------|
+|---------|------|----------|
 | 1.0.0 | 2025-07-01 | Initial MAUGUS GitFlow standards |
 
 ---

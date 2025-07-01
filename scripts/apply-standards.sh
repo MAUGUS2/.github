@@ -31,6 +31,10 @@ print_warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
+print_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
 # Check if we're in a git repository
 if ! git rev-parse --git-dir > /dev/null 2>&1; then
     print_error "Not in a git repository!"
@@ -162,17 +166,70 @@ EOF
     print_success "Created .gitignore"
 fi
 
-# 7. Stage changes
+# 7. 🌳 CONFIGURE MAUGUS GITFLOW (NEW SECTION)
+print_step "Configuring MAUGUS GitFlow for quality-first development..."
+
+# Configure merge behavior (NEVER fast-forward for feature merges)
+git config --local merge.ff false
+print_info "merge.ff = false (always create merge commits for features)"
+
+# Configure pull behavior (ONLY fast-forward for clean pulls) 
+git config --local pull.ff only
+print_info "pull.ff = only (safe pulls without unnecessary merge commits)"
+
+# Configure branch behavior
+git config --local branch.autosetupmerge always
+git config --local branch.autosetuprebase always
+print_info "Auto-setup for tracking and rebase configured"
+
+# Add helpful GitFlow aliases
+print_info "Adding GitFlow aliases..."
+
+# Visual git graph
+git config --local alias.graph "log --graph --pretty=format:'%C(auto)%h%d %s %C(green)(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
+
+# Quick navigation
+git config --local alias.develop "checkout develop"
+git config --local alias.main "checkout main"
+
+# Safe sync
+git config --local alias.sync-develop "!git checkout develop && git pull origin develop"
+git config --local alias.sync-main "!git checkout main && git pull origin main"
+
+# Feature workflow
+git config --local alias.feature-start "checkout -b"
+git config --local alias.feature-finish "merge --no-ff"
+
+# Quality helpers
+git config --local alias.last "log -1 HEAD --stat"
+git config --local alias.unstage "reset HEAD --"
+
+print_success "MAUGUS GitFlow configured with quality-first settings"
+
+# 8. Analyze repository structure
+print_step "Analyzing repository for GitFlow recommendations..."
+
+HAS_DEVELOP=$(git show-ref --verify --quiet refs/heads/develop && echo "yes" || echo "no")
+HAS_MAIN=$(git show-ref --verify --quiet refs/heads/main && echo "yes" || echo "no")
+
+if [ "$HAS_DEVELOP" = "no" ]; then
+    print_warning "No 'develop' branch found for GitFlow!"
+    echo "  To create develop branch: git checkout main && git checkout -b develop && git push -u origin develop"
+fi
+
+# 9. Stage changes
 print_step "Staging changes..."
 git add .github/ CONTRIBUTING.md CODEOWNERS .gitignore 2>/dev/null || true
 
-# 8. Summary
+# 10. Summary
 echo ""
 echo "📋 Summary"
 echo "=========="
 print_success "Templates installed"
 print_success "Workflows configured"
 print_success "Documentation added"
+print_success "GitFlow configured with anti-fast-forward protection"
+print_success "Quality-first aliases added"
 
 if command -v gh &> /dev/null; then
     print_success "Labels synced"
@@ -184,16 +241,36 @@ else
 fi
 
 echo ""
+echo "🌳 GitFlow Configuration Applied:"
+echo "================================="
+echo "✅ merge.ff = false     (visual merges for features)"
+echo "✅ pull.ff = only       (clean pulls)"
+echo "✅ Auto-setup branches  (tracking & rebase)"
+echo "✅ GitFlow aliases       (git graph, git develop, etc.)"
+
+echo ""
+echo "🎯 Available GitFlow Commands:"
+echo "=============================="
+echo "git graph                # Visual git history"
+echo "git develop              # Switch to develop"
+echo "git sync-develop         # Safe develop sync"
+echo "git feature-start <name> # Create feature branch"
+echo "git feature-finish <name># Merge with --no-ff"
+
+echo ""
 echo "📝 Next steps:"
 echo "1. Review and commit changes:"
-echo "   git commit -m 'chore: apply MAUGUS GitHub standards'"
+echo "   git commit -m 'chore: apply MAUGUS standards with GitFlow'"
 echo ""
 echo "2. Push to GitHub:"
 echo "   git push origin $CURRENT_BRANCH"
 echo ""
-echo "3. If this is a new repo, consider:"
-echo "   - Adding a README.md"
-echo "   - Setting up secrets for CI/CD"
-echo "   - Configuring project settings"
+if [ "$HAS_DEVELOP" = "no" ]; then
+echo "3. Create develop branch (if this is a new repository):"
+echo "   git checkout main && git checkout -b develop && git push -u origin develop"
 echo ""
-echo "🎉 Done! Your repository now follows MAUGUS standards."
+fi
+echo "📚 For complete GitFlow documentation:"
+echo "   https://github.com/MAUGUS2/.github/blob/main/docs/maugus-gitflow-standards.md"
+echo ""
+echo "🎉 Done! Your repository now follows MAUGUS standards with quality-first GitFlow."
