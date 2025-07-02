@@ -1,0 +1,147 @@
+name: 🏗️ Technical Debt
+description: Professional technical debt documentation following industry standards
+title: "[DEBT] "
+labels: ["type/debt", "status/ready"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🚨 !IMPORTANT: Technical Debt Documentation
+        
+        This template follows **MAUGUS standards** for systematic technical debt management:
+        - **Prevent "castelos de cartas"**: Document every shortcut and "gambiarra"
+        - **Martin Fowler's Quadrant**: Classify debt type for proper treatment
+        - **Business context required**: Explain WHY shortcuts were necessary
+        - **Paydown plan mandatory**: Define HOW and WHEN to resolve
+        - **Quality first**: Ensure debt doesn't accumulate silently
+        
+        ---
+
+  - type: dropdown
+    id: debt-quadrant
+    attributes:
+      label: 🎯 Debt Classification (Fowler's Quadrant)
+      description: What type of technical debt is this?
+      options:
+        - Deliberate & Prudent (Strategic business shortcut)
+        - Deliberate & Reckless (Quick & dirty for deadline)
+        - Inadvertent & Prudent (Learning debt from better design discovery)
+        - Inadvertent & Reckless (Poor practices from inexperience)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: debt-category
+    attributes:
+      label: 🔧 Debt Category
+      description: What area is affected?
+      options:
+        - Performance (speed, memory, scalability)
+        - Security (vulnerabilities, access control)
+        - Maintainability (code quality, complexity)
+        - Architecture (design patterns, structure)
+        - Documentation (missing specs, outdated docs)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: debt-priority
+    attributes:
+      label: 🚦 Priority Level
+      description: Business impact and urgency (MAUGUS escalation matrix)
+      options:
+        - 🚨 Critical (Security/Performance - CEO approval required)
+        - 🔥 High (Architecture impact - Tech Lead + PO approval)
+        - ⚠️ Medium (Code quality - Team discussion required)
+        - 🟢 Low (Minor shortcuts - Document and schedule)
+    validations:
+      required: true
+
+  - type: textarea
+    id: debt-context
+    attributes:
+      label: 📋 Business Context (WHY)
+      description: Why was this technical shortcut necessary? (2-3 lines max)
+      placeholder: |
+        Client deadline required authentication bypass for demo.
+        MVP launch needed quick database fix to prevent delays.
+    validations:
+      required: true
+
+  - type: textarea
+    id: debt-impact
+    attributes:
+      label: 💥 Business Impact (CONSEQUENCES)
+      description: What happens if this debt is not resolved? (3-5 items max)
+      placeholder: |
+        - [ ] Performance degrades under high load (>1000 users)
+        - [ ] Security vulnerability in production environment
+        - [ ] Maintenance time increases by 50% for related features
+        - [ ] New features in this area become blocked
+    validations:
+      required: true
+
+  - type: textarea
+    id: debt-plan
+    attributes:
+      label: 🎯 Paydown Plan (HOW & WHEN)
+      description: Specific steps and timeline for resolution (3-5 steps max)
+      placeholder: |
+        - [ ] Research proper authentication patterns (1 day)
+        - [ ] Implement OAuth2 integration (3 days)
+        - [ ] Migrate existing users to new system (2 days)
+        - [ ] Remove temporary bypass code (1 day)
+        Timeline: Complete by Sprint 15 (2 weeks)
+    validations:
+      required: true
+
+  - type: input
+    id: debt-location
+    attributes:
+      label: 📍 Code Location
+      description: File path and line numbers where debt exists
+      placeholder: "src/auth/AuthService.ts:45-67, src/middleware/auth.ts:23"
+    validations:
+      required: true
+
+  - type: textarea
+    id: debt-comment
+    attributes:
+      label: 💬 Code Comment Format
+      description: Exact comment to add to the code (copy-paste ready)
+      placeholder: |
+        // !DEBT: [CRITICAL] - Temporary auth bypass for demo
+        // WHY: Client deadline required working demo without full OAuth
+        // IMPACT: Security vulnerability, no access control in production
+        // PLAN: Implement OAuth2 by Sprint 15, remove bypass code
+        // ISSUE: #123
+      render: typescript
+    validations:
+      required: true
+
+  - type: input
+    id: deadline
+    attributes:
+      label: ⏰ Resolution Deadline
+      description: When must this be resolved? (Sprint/date)
+      placeholder: "Sprint 15 / March 15, 2024"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: quality_gates
+    attributes:
+      label: 🛡️ Quality Gates
+      description: Verify before creating debt issue (ensures high-quality documentation)
+      options:
+        - label: Added !DEBT comment to code with this issue reference
+          required: true
+        - label: Business context clearly explains WHY shortcut was necessary
+          required: true
+        - label: Impact describes WHAT breaks if not fixed
+          required: true
+        - label: Paydown plan has specific steps with timeline
+          required: true
+        - label: Appropriate priority level assigned using MAUGUS matrix
+          required: true
